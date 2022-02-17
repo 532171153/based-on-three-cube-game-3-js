@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube</title>
+    <link type="text/css" rel="styleSheet"  href="../css/cube.css" />
+</head>
+<body>
+    <div class="menu">
+        <div class="speed">
+            <span>速度：</span>
+            <select onchange="onSpeedChange(event)">
+                <option value="0.01">0.01</option>
+                <option value="0.05">0.03</option>
+                <option value="0.05">0.05</option>
+                <option value="0.1">0.1</option>
+                <option value="0.2">0.2</option>
+                <option value="0.3">0.3</option>
+            </select>
+        </div>
+        <div class="model">
+            <span>模式：</span>
+            <select onchange="onModelChange(event)">
+                <option value="1">休闲模式</option>
+                <option value="2">限时模式</option>
+                <option value="3">挑战模式</option>
+            </select>
+        </div>
+        <div id="difficulty">
+            <span>难度：</span>
+            <select onchange="onDifficultyChange(event)">
+                <option value="10">简单</option>
+                <option value="5">中等</option>
+                <option value="3">困难</option>
+            </select>
+        </div>
+        <div class="play">
+            <button class="start" onclick="play()">开始</button>
+        </div>
+    </div>
+    
+    <div id="container"></div>
+    <div id="tips">
+        <div id="timer"></div>
+        <div id="totalScore"></div>
+        <div id="gameTip"></div>
+    </div>
+    <script src="../../modules/three.js"></script>
+    <script src="../../modules/stats.min.js"></script>
+    <script src="../../modules/OrbitControls.js"></script>
+    <!-- 这个是初版，现在使用class代替 -->
+    <!-- <script src="../js/cube.js"></script> -->
+    <script src="../js/NoNameGame.js"></script>
+    <script>
+        var noNameGame = new NoNameGame({
+            speed: 0.01,
+            document: window.document,
+            fpsElementId: 'container',
+            totalScoreId: 'totalScore',
+            timerId: 'timer',
+            gameTipId: 'gameTip'
+        })
+
+        function animate() {
+            requestAnimationFrame(animate);
+            noNameGame.update();
+        };
+
+        animate();
+
+        function onSpeedChange(ev) {
+            noNameGame.setSpeed(ev.target.value * 1);
+        }
+
+        function onModelChange(ev) {
+            const num = ev.target.value * 1;
+            const difficulty = document.getElementById('difficulty');
+            if (num === 3) {
+                difficulty.style.display = 'block';
+            } else {
+                difficulty.style.display = 'none';
+            }
+            noNameGame.changeModel(num);
+        }
+
+        function onDifficultyChange(ev) {
+            noNameGame.changeDifficulty(ev.target.value * 1);
+        }
+
+        function play() {
+            noNameGame.play();
+        }
+    </script>
+</body>
+</html>
